@@ -1,0 +1,34 @@
+{
+  "name": "resourceful-simpledb",
+  "version": "0.0.1",
+  "description": "A SimpleDB backend for the Flatiron Resourceful framework.",
+  "keywords": [
+    "flatiron",
+    "model",
+    "resourceful",
+    "simpledb"
+  ],
+  "homepage": "http://github.com/markbirbeck/resourceful-simpledb/",
+  "bugs": "http://github.com/markbirbeck/resourceful-simpledb/issues",
+  "license": "Apache-2.0",
+  "main": "./lib/resourceful-simpledb",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/markbirbeck/resourceful-simpledb.git"
+  },
+  "readmeFilename": "README.md",
+  "scripts": {
+    "test": "NODE_ENV=test mocha"
+  },
+  "dependencies": {
+    "resourceful": "~0.3.3",
+    "resourceful-base-engine": "~0.2.2",
+    "simpledb": "~0.1.0"
+  },
+  "devDependencies": {
+    "config": "~0.4.35",
+    "mocha": "~1.17.1",
+    "should": "~3.1.2",
+    "yaml": "~0.2.3"
+  }
+}
