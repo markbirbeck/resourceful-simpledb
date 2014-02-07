@@ -2,13 +2,23 @@
 
 var should = require('should');
 
+/**
+ * Create a Broadway app to house our plugin:
+ */
+
+var resourceful = require('resourceful');
+var app = new (require('broadway')).App();
+
+/**
+ * Add SimpleDB support to resourceful:
+ */
+
+app.use(require('../lib/resourceful-simpledb'), resourceful);
+app.init();
 
 describe('Creatures DB:', function(){
 
   var AWS_CONFIG = require('config').aws;
-
-  var resourceful = require('resourceful');
-  require('../lib/resourceful-simpledb').init(resourceful);
 
   var fixture = {
     diet: 'carnivore'
