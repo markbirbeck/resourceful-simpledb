@@ -27,7 +27,6 @@ describe('SimpleDB:', function(){
     sdb.put(id, fixture, function(err, company){
       should.not.exist(err);
       should.exist(company);
-      company.should.have.property('id', id);
       company.should.include(fixture);
       done();
     });
@@ -37,7 +36,6 @@ describe('SimpleDB:', function(){
     sdb.get(id, function(err, company){
       should.not.exist(err);
       should.exist(company);
-      company.should.have.property('id', id);
       company.should.include(fixture);
       done();
     });
