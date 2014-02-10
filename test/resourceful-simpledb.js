@@ -89,7 +89,7 @@ describe('Creatures DB:', function(){
     });
   });
 
-  it('should update Creature', function(done){
+  it('should update Creature after get()', function(done){
     Creature.get(id, function(err, creature){
       should.not.exist(err);
       should.exist(creature);
@@ -103,6 +103,28 @@ describe('Creatures DB:', function(){
         changed.should.have.property(Creature.key, id);
         Creature.get(id, function (err, check){
           changed.should.have.property('vertebrate', false);
+          check.should.have.property('diet', 'carnivore');
+          done();
+        });
+      });
+    });
+  });
+
+  it('should update Creature after find()', function(done){
+    Creature.find({vertebrate: false}, function(err, creatures){
+      should.not.exist(err);
+      should.exist(creatures);
+      var creature = creatures[0];
+      creature.should.have.property('resource', 'Creature');
+      creature.should.have.property(Creature.key, id);
+      creature.should.have.property('vertebrate', false);
+      creature.update({vertebrate: true}, function(err, changed){
+        should.not.exist(err);
+        should.exist(changed);
+        changed.should.have.property('resource', 'Creature');
+        changed.should.have.property(Creature.key, id);
+        Creature.get(id, function (err, check){
+          changed.should.have.property('vertebrate', true);
           check.should.have.property('diet', 'carnivore');
           done();
         });
