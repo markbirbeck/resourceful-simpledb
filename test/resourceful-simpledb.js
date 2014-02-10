@@ -2,13 +2,23 @@
 
 var should = require('should');
 
+/**
+ * Create a Broadway app to house our plugin:
+ */
+
+var resourceful = require('resourceful');
+var app = new (require('broadway')).App();
+
+/**
+ * Add SimpleDB support to resourceful:
+ */
+
+app.use(require('../lib/resourceful-simpledb'), resourceful);
+app.init();
 
 describe('Creatures DB:', function(){
 
   var AWS_CONFIG = require('config').aws;
-
-  var resourceful = require('resourceful');
-  require('../lib/resourceful-simpledb').init(resourceful);
 
   var fixture = {
     diet: 'carnivore'
@@ -78,6 +88,27 @@ describe('Creatures DB:', function(){
     });
   });
 
+  it('should update Creature', function(done){
+    Creature.get(id, function(err, creature){
+      should.not.exist(err);
+      should.exist(creature);
+      creature.should.have.property('resource', 'Creature');
+      creature.should.have.property('id', id);
+      creature.should.have.property('vertebrate', true);
+      creature.update({vertebrate: false}, function(err, changed){
+        should.not.exist(err);
+        should.exist(changed);
+        changed.should.have.property('resource', 'Creature');
+        changed.should.have.property('id', id);
+        Creature.get(id, function (err, check){
+          changed.should.have.property('vertebrate', false);
+          check.should.have.property('diet', 'carnivore');
+          done();
+        });
+      });
+    });
+  });
+
   it('should delete Creature by id', function(done){
     Creature.destroy(id, function(err, res){
       should.not.exist(err);
@@ -85,6 +116,67 @@ describe('Creatures DB:', function(){
       res.should.have.property('id', 'creature/' + id);
       res.should.have.property('status', 204);
       done();
+    });
+  });
+
+  it('should create, find and delete Creatures', function(done){
+    /**
+     * Create a carnivore and a herbivore:
+     */
+
+    var fox = new(Creature)(fixture);
+
+    fox.id = 'fox';
+    fox.save(function(err, creature){
+      should.not.exist(err);
+      should.exist(creature);
+
+      var rabbit = new(Creature)(fixture);
+
+      rabbit.id = 'rabbit';
+      rabbit.diet = 'herbivore';
+      rabbit.save(function(err, r){
+        should.not.exist(err);
+        should.exist(r);
+
+        /**
+         * Search by diet:
+         */
+
+        Creature.find({diet: 'herbivore'}, function(err, creatures){
+          should.not.exist(err);
+          should.exist(creatures);
+          creatures.length.should.equal(1);
+
+          /**
+           * This is not really true...it should equal 'rabbit':
+           */
+
+          creatures[0].id.should.equal('creature/rabbit');
+
+          /**
+           * Search for 'all':
+           */
+
+          Creature.find({}, function(err, creatures){
+            should.not.exist(err);
+            should.exist(creatures);
+            creatures.length.should.equal(2);
+
+            /**
+             * Now delete both animals:
+             */
+
+            Creature.destroy('wolf', function (err /*, wolf */){
+              should.not.exist(err);
+              Creature.destroy('rabbit', function (err /*, rabbit */){
+                should.not.exist(err);
+                done();
+              });
+            });
+          });
+        });
+      });
     });
   });
 });

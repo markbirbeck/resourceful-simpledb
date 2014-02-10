@@ -1,6 +1,6 @@
 {
   "name": "resourceful-simpledb",
-  "version": "0.1.1",
+  "version": "0.3.0",
   "description": "A SimpleDB backend for the Flatiron Resourceful framework.",
   "keywords": [
     "flatiron",
@@ -21,13 +21,14 @@
     "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
-    "resourceful": "~0.3.3",
-    "resourceful-base-engine": "~0.2.2",
+    "resourceful-base-engine": "~0.3.0",
     "simpledb": "~0.1.0"
   },
   "devDependencies": {
+    "broadway": "~0.2.9",
     "config": "~0.4.35",
     "mocha": "~1.17.1",
+    "resourceful": "~0.3.3",
     "should": "~3.1.2",
     "yaml": "~0.2.3"
   }
