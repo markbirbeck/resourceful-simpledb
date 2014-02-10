@@ -151,10 +151,10 @@ describe('Creatures DB:', function(){
           creatures[0][Creature.key].should.equal('rabbit');
 
           /**
-           * Search for 'all':
+           * Retrieve all records:
            */
 
-          Creature.find({}, function(err, creatures){
+          Creature.all(function(err, creatures){
             should.not.exist(err);
             should.exist(creatures);
             creatures.length.should.equal(2);
