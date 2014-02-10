@@ -88,6 +88,27 @@ describe('Creatures DB:', function(){
     });
   });
 
+  it('should update Creature', function(done){
+    Creature.get(id, function(err, creature){
+      should.not.exist(err);
+      should.exist(creature);
+      creature.should.have.property('resource', 'Creature');
+      creature.should.have.property('id', id);
+      creature.should.have.property('vertebrate', true);
+      creature.update({vertebrate: false}, function(err, changed){
+        should.not.exist(err);
+        should.exist(changed);
+        changed.should.have.property('resource', 'Creature');
+        changed.should.have.property('id', id);
+        Creature.get(id, function (err, check){
+          changed.should.have.property('vertebrate', false);
+          check.should.have.property('diet', 'carnivore');
+          done();
+        });
+      });
+    });
+  });
+
   it('should delete Creature by id', function(done){
     Creature.destroy(id, function(err, res){
       should.not.exist(err);
