@@ -1,6 +1,6 @@
 {
   "name": "resourceful-simpledb",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "description": "A SimpleDB backend for the Flatiron Resourceful framework.",
   "keywords": [
     "flatiron",
