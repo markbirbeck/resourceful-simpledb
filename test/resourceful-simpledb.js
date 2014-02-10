@@ -51,12 +51,13 @@ describe('Creatures DB:', function(){
       should.exist(creature);
       creature.should.have.property('resource', 'Creature');
       creature.should.have.property('status', 201);
+      creature.should.have.property(Creature.key);
       creature.should.include(fixture);
       creature.destroy(function(err, res){
         should.not.exist(err);
         should.exist(res);
         res.should.have.property('status', 204);
-        res.should.have.property('id');
+        res.should.have.property(Creature.key);
         done();
       });
     });
@@ -65,7 +66,7 @@ describe('Creatures DB:', function(){
   it('should create a Creature with id field', function(done){
     var wolf = new(Creature)(fixture);
 
-    wolf.id = id;
+    wolf[Creature.key] = id;
 
     wolf.save(function(err, creature){
       should.not.exist(err);
@@ -82,26 +83,48 @@ describe('Creatures DB:', function(){
       should.not.exist(err);
       should.exist(creature);
       creature.should.have.property('resource', 'Creature');
-      creature.should.have.property('id', id);
+      creature.should.have.property(Creature.key, id);
       creature.should.include(fixture);
       done();
     });
   });
 
-  it('should update Creature', function(done){
+  it('should update Creature after get()', function(done){
     Creature.get(id, function(err, creature){
       should.not.exist(err);
       should.exist(creature);
       creature.should.have.property('resource', 'Creature');
-      creature.should.have.property('id', id);
+      creature.should.have.property(Creature.key, id);
       creature.should.have.property('vertebrate', true);
       creature.update({vertebrate: false}, function(err, changed){
         should.not.exist(err);
         should.exist(changed);
         changed.should.have.property('resource', 'Creature');
-        changed.should.have.property('id', id);
+        changed.should.have.property(Creature.key, id);
         Creature.get(id, function (err, check){
           changed.should.have.property('vertebrate', false);
+          check.should.have.property('diet', 'carnivore');
+          done();
+        });
+      });
+    });
+  });
+
+  it('should update Creature after find()', function(done){
+    Creature.find({vertebrate: false}, function(err, creatures){
+      should.not.exist(err);
+      should.exist(creatures);
+      var creature = creatures[0];
+      creature.should.have.property('resource', 'Creature');
+      creature.should.have.property(Creature.key, id);
+      creature.should.have.property('vertebrate', false);
+      creature.update({vertebrate: true}, function(err, changed){
+        should.not.exist(err);
+        should.exist(changed);
+        changed.should.have.property('resource', 'Creature');
+        changed.should.have.property(Creature.key, id);
+        Creature.get(id, function (err, check){
+          changed.should.have.property('vertebrate', true);
           check.should.have.property('diet', 'carnivore');
           done();
         });
@@ -113,7 +136,7 @@ describe('Creatures DB:', function(){
     Creature.destroy(id, function(err, res){
       should.not.exist(err);
       should.exist(res);
-      res.should.have.property('id', 'creature/' + id);
+      res.should.have.property(Creature.key, 'creature/' + id);
       res.should.have.property('status', 204);
       done();
     });
@@ -126,14 +149,14 @@ describe('Creatures DB:', function(){
 
     var fox = new(Creature)(fixture);
 
-    fox.id = 'fox';
+    fox[Creature.key] = 'fox';
     fox.save(function(err, creature){
       should.not.exist(err);
       should.exist(creature);
 
       var rabbit = new(Creature)(fixture);
 
-      rabbit.id = 'rabbit';
+      rabbit[Creature.key] = 'rabbit';
       rabbit.diet = 'herbivore';
       rabbit.save(function(err, r){
         should.not.exist(err);
@@ -147,18 +170,13 @@ describe('Creatures DB:', function(){
           should.not.exist(err);
           should.exist(creatures);
           creatures.length.should.equal(1);
+          creatures[0][Creature.key].should.equal('rabbit');
 
           /**
-           * This is not really true...it should equal 'rabbit':
+           * Retrieve all records:
            */
 
-          creatures[0].id.should.equal('creature/rabbit');
-
-          /**
-           * Search for 'all':
-           */
-
-          Creature.find({}, function(err, creatures){
+          Creature.all(function(err, creatures){
             should.not.exist(err);
             should.exist(creatures);
             creatures.length.should.equal(2);
