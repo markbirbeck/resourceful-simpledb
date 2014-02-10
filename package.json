@@ -21,7 +21,7 @@
     "test": "NODE_ENV=test mocha"
   },
   "dependencies": {
-    "resourceful-base-engine": "~0.2.2",
+    "resourceful-base-engine": "~0.3.0",
     "simpledb": "~0.1.0"
   },
   "devDependencies": {

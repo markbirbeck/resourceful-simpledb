@@ -118,4 +118,65 @@ describe('Creatures DB:', function(){
       done();
     });
   });
+
+  it('should create, find and delete Creatures', function(done){
+    /**
+     * Create a carnivore and a herbivore:
+     */
+
+    var fox = new(Creature)(fixture);
+
+    fox.id = 'fox';
+    fox.save(function(err, creature){
+      should.not.exist(err);
+      should.exist(creature);
+
+      var rabbit = new(Creature)(fixture);
+
+      rabbit.id = 'rabbit';
+      rabbit.diet = 'herbivore';
+      rabbit.save(function(err, r){
+        should.not.exist(err);
+        should.exist(r);
+
+        /**
+         * Search by diet:
+         */
+
+        Creature.find({diet: 'herbivore'}, function(err, creatures){
+          should.not.exist(err);
+          should.exist(creatures);
+          creatures.length.should.equal(1);
+
+          /**
+           * This is not really true...it should equal 'rabbit':
+           */
+
+          creatures[0].id.should.equal('creature/rabbit');
+
+          /**
+           * Search for 'all':
+           */
+
+          Creature.find({}, function(err, creatures){
+            should.not.exist(err);
+            should.exist(creatures);
+            creatures.length.should.equal(2);
+
+            /**
+             * Now delete both animals:
+             */
+
+            Creature.destroy('wolf', function (err /*, wolf */){
+              should.not.exist(err);
+              Creature.destroy('rabbit', function (err /*, rabbit */){
+                should.not.exist(err);
+                done();
+              });
+            });
+          });
+        });
+      });
+    });
+  });
 });
