@@ -6,6 +6,16 @@ describe('SimpleDB data packer', function(){
 
   var packer = require('../lib/sdb_packer');
 
+  describe('empty objects', function(){
+    it('should not fail when packing an empty object', function(){
+      packer.pack({}).should.eql({});
+    });
+
+    it('should not fail when unpacking an empty object', function(){
+      packer.unpack({}).should.eql({});
+    });
+  });
+
   describe('id', function(){
     it('should skip the id field when packing', function(){
       packer.pack({'id': 'ab1136'}).should.eql({'id': 'ab1136'});
