@@ -90,6 +90,22 @@ describe('SimpleDB data packer', function(){
         'title': 'On Tolerance: The Life Style Wars: A Defence of Moral Independence'
       });
     });
+
+    it('should pack strings with the non-valid URL characters in', function(){
+      packer.pack({
+        'title': 'Get rid of 100% of wrinkles* in your (or anyone else\'s) clothes! (* = creases)'
+      }).should.eql({
+        'title': 'string:Get rid of 100%% of wrinkles%2A in your %28or anyone else%27s%29 clothes%21 %28%2A = creases%29'
+      });
+    });
+
+    it('should unpack strings with the non-valid URL characters in', function(){
+      packer.unpack({
+        'title': 'string:Get rid of 100%% of wrinkles%2A in your %28or anyone else%27s%29 clothes%21 %28%2A = creases%29'
+      }).should.eql({
+        'title': 'Get rid of 100% of wrinkles* in your (or anyone else\'s) clothes! (* = creases)'
+      });
+    });
   });
 
   describe('Objects', function(){
