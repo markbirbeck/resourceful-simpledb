@@ -63,7 +63,7 @@ describe('Creatures DB:', function(){
     });
   });
 
-  it.only('should not overwhelm SimpleDB with too many requests', function(done){
+  it('should not overwhelm SimpleDB with too many requests', function(done){
     var completed = 0;
     var limit = 10;
 
