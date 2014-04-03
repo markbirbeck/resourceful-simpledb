@@ -63,6 +63,49 @@ describe('Creatures DB:', function(){
     });
   });
 
+  it('should not overwhelm SimpleDB with too many requests', function(done){
+    var completed = 0;
+    var limit = 10;
+
+    for (var i = 0; i < limit; i++){
+      var wolf = new(Creature)(fixture);
+
+      wolf.id = 'wolf' + i;
+      wolf.save(function(err, creature){
+        should.not.exist(err);
+        should.exist(creature);
+        creature.should.have.property('resource', 'Creature');
+        creature.should.have.property('status', 201);
+        creature.should.have.property(Creature.key);
+        creature.should.include(fixture);
+        completed++;
+        if (completed === limit){
+
+          /**
+           * Now destroy all of the items we created:
+           */
+
+          completed = 0;
+          for (i = 0; i < limit; i++){
+            var wolf = new(Creature)(fixture);
+
+            wolf.id = 'wolf' + i;
+            wolf.destroy(function(err, res){
+              should.not.exist(err);
+              should.exist(res);
+              res.should.have.property('status', 204);
+              res.should.have.property(Creature.key);
+              completed++;
+              if (completed === limit){
+                done();
+              }
+            });
+          }
+        }
+      });
+    }
+  });
+
   it('should create a Creature with id field', function(done){
     var wolf = new(Creature)(fixture);
 
