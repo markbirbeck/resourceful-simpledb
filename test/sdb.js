@@ -48,4 +48,50 @@ describe('SimpleDB:', function(){
       done();
     });
   });
+
+  it('should use paging when returning more than 100 items', function(done){
+
+    /**
+     * Create more than 100 items:
+     */
+
+    var limit = 110;
+    var completed = 0;
+
+    limit.should.be.greaterThan(100);
+
+    for (var i = 0; i < limit; i++){
+      sdb.put(id + '/' + i, fixture, function(err, company){
+        should.not.exist(err);
+        should.exist(company);
+        company.should.include(fixture);
+        if (++completed === limit){
+
+          /**
+           * Now query to ensure paging works:
+           */
+
+          sdb.find(fixture, function (err, res){
+            should.not.exist(err);
+            should.exist(res);
+            res.should.have.length(limit);
+
+            /**
+             * Finally delete all of the records:
+             */
+
+            completed = 0;
+            for (i = 0; i < limit; i++){
+              sdb.del(id + '/' + i, function (err, _id){
+                should.not.exist(err);
+                if (++completed === limit){
+                  done();
+                }
+              })
+            }
+          })
+        }
+      })
+    }
+  });
 });
