@@ -2,6 +2,8 @@
 
 A SimpleDB back-end for Resourceful.
 
+[![wercker status](https://app.wercker.com/status/f5d812d5116530b96a2c939d9dd06c43/m/master "wercker status")](https://app.wercker.com/project/bykey/f5d812d5116530b96a2c939d9dd06c43)
+
 ## Testing
 
 To run the tests you'll need to add your AWS keys. This can be done by copying `config/environment.yaml` to `config/test.yaml` and adding your keys, before running `npm test`.

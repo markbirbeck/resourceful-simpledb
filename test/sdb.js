@@ -41,6 +41,67 @@ describe('SimpleDB:', function(){
     });
   });
 
+  describe('Find', function(){
+    describe('company number', function(){
+      beforeEach(function(done){
+        sdb.put(id, fixture, function(err, company){
+          should.not.exist(err);
+          should.exist(company);
+          company.should.include(fixture);
+          done();
+        });
+      });
+
+      afterEach(function (done){
+        sdb.del(id, function(err, _id){
+          should.not.exist(err);
+          _id.should.equal(id);
+          done();
+        });
+      });
+
+      it('should use \'=\' if no condition specified', function(done){
+        sdb.find({'CompanyNumber': '06477691'}, function (err, companies) {
+          should.not.exist(err);
+          should.exist(companies);
+          companies.should.have.length(1);
+          companies[0].should.include(fixture);
+          done();
+        });
+      });
+
+      it('should use \'=\' if set', function(done){
+        sdb.find({'=CompanyNumber': '06477691'}, function (err, companies) {
+          should.not.exist(err);
+          should.exist(companies);
+          companies.should.have.length(1);
+          companies[0].should.include(fixture);
+          done();
+        });
+      });
+
+      it('should use \'<\' if set', function(done){
+        sdb.find({'<CompanyNumber': '06477692'}, function (err, companies) {
+          should.not.exist(err);
+          should.exist(companies);
+          companies.should.have.length(1);
+          companies[0].should.include(fixture);
+          done();
+        });
+      });
+
+      it('should use \'>\' if set', function(done){
+        sdb.find({'>CompanyNumber': '06477690'}, function (err, companies) {
+          should.not.exist(err);
+          should.exist(companies);
+          companies.should.have.length(1);
+          companies[0].should.include(fixture);
+          done();
+        });
+      });
+    });
+  });
+
   it('should delete by id', function(done){
     sdb.del(id, function(err, _id){
       should.not.exist(err);
