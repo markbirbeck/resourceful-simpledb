@@ -41,6 +41,18 @@ describe('SimpleDB:', function(){
     });
   });
 
+  describe.only('should find', function(){
+    it('by company number', function(done){
+      sdb.find({'CompanyNumber': '06477691'}, function (err, companies) {
+        should.not.exist(err);
+        should.exist(companies);
+        companies.should.have.length(1);
+        companies[0].should.include(fixture);
+        done();
+      });
+    });
+  });
+
   it('should delete by id', function(done){
     sdb.del(id, function(err, _id){
       should.not.exist(err);
