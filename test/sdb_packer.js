@@ -58,6 +58,18 @@ describe('SimpleDB data packer', function(){
     });
   });
 
+  describe('Dates', function(){
+    var now = Date.now();
+
+    it('should pack Unix timestamp', function(){
+      packer.pack({'ctime': now}).should.eql({'ctime': 'number:' + now});
+    });
+
+    it('should unpack Unix timestamp', function(){
+      packer.unpack({'mtime': 'number:' + now}).should.eql({'mtime': now});
+    });
+  });
+
   describe('Strings', function(){
     it('should pack strings', function(){
       packer.pack(
@@ -109,15 +121,19 @@ describe('SimpleDB data packer', function(){
   });
 
   describe('Objects', function(){
+    var now = Date.now();
+
     it('should pack a full object', function(){
       packer.pack({
         'id': 'xc9982'
       , 'author': 'Ivan Turgenev'
+      , 'ctime': now
       , 'title': 'Fathers and Sons'
       , 'price': 499
       }).should.eql({
         'id': 'xc9982'
       , 'author': 'string:Ivan Turgenev'
+      , 'ctime': 'number:' + now
       , 'title': 'string:Fathers and Sons'
       , 'price': 'number:0000000499'
       });
@@ -127,11 +143,13 @@ describe('SimpleDB data packer', function(){
       packer.unpack({
         'id': 'gh8856'
       , 'author': 'string:Hans Fallada'
+      , 'ctime': 'number:' + now
       , 'title': 'string:Alone in Berlin'
       , 'price': 'number:0000000689'
       }).should.eql({
         'id': 'gh8856'
       , 'author': 'Hans Fallada'
+      , 'ctime': now
       , 'title': 'Alone in Berlin'
       , 'price': 689
       });
@@ -141,6 +159,7 @@ describe('SimpleDB data packer', function(){
       var book = {
         'id': 'kq8873'
       , 'author': 'Ralph Ellison'
+      , 'ctime': now
       , 'title': 'Invisible Man'
       , 'price': 689
       };
