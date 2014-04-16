@@ -50,11 +50,11 @@ describe('SimpleDB data packer', function(){
 
   describe('Numbers', function(){
     it('should pack numbers', function(){
-      packer.pack({'age': 23}).should.eql({'age': 'number:0000000023'});
+      packer.pack({'age': 23}).should.eql({'age': 'number:0000000000023'});
     });
 
     it('should unpack numbers', function(){
-      packer.unpack({'price': 'number:0000001234'}).should.eql({'price': 1234});
+      packer.unpack({'price': 'number:0000000001234'}).should.eql({'price': 1234});
     });
   });
 
@@ -135,7 +135,7 @@ describe('SimpleDB data packer', function(){
       , 'author': 'string:Ivan Turgenev'
       , 'ctime': 'number:' + now
       , 'title': 'string:Fathers and Sons'
-      , 'price': 'number:0000000499'
+      , 'price': 'number:0000000000499'
       });
     });
 
@@ -145,7 +145,7 @@ describe('SimpleDB data packer', function(){
       , 'author': 'string:Hans Fallada'
       , 'ctime': 'number:' + now
       , 'title': 'string:Alone in Berlin'
-      , 'price': 'number:0000000689'
+      , 'price': 'number:0000000000689'
       }).should.eql({
         'id': 'gh8856'
       , 'author': 'Hans Fallada'
