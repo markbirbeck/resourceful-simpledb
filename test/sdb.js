@@ -99,6 +99,22 @@ describe('SimpleDB:', function(){
           done();
         });
       });
+
+      it('should map \'= null\' to  \'is null\'', function(done){
+
+        /**
+         * Note that any field name will do, as long as it doesn't exist in
+         * the fixture:
+         */
+
+        sdb.find({'=aFieldThatDoesNotExist': 'null'}, function (err, companies) {
+          should.not.exist(err);
+          should.exist(companies);
+          companies.should.have.length(1);
+          companies[0].should.include(fixture);
+          done();
+        });
+      });
     });
   });
 
