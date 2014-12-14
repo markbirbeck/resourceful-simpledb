@@ -52,7 +52,7 @@ describe('Creatures DB:', function(){
       creature.should.have.property('resource', 'Creature');
       creature.should.have.property('status', 201);
       creature.should.have.property(Creature.key);
-      creature.should.include(fixture);
+      creature.should.containEql(fixture);
       creature.destroy(function(err, res){
         should.not.exist(err);
         should.exist(res);
@@ -77,7 +77,7 @@ describe('Creatures DB:', function(){
         creature.should.have.property('resource', 'Creature');
         creature.should.have.property('status', 201);
         creature.should.have.property(Creature.key);
-        creature.should.include(fixture);
+        creature.should.containEql(fixture);
         completed++;
         if (completed === limit){
 
@@ -116,7 +116,7 @@ describe('Creatures DB:', function(){
       should.exist(creature);
       creature.should.have.property('resource', 'Creature');
       creature.should.have.property('status', 201);
-      creature.should.include(fixture);
+      creature.should.containEql(fixture);
       done();
     });
   });
@@ -127,7 +127,7 @@ describe('Creatures DB:', function(){
       should.exist(creature);
       creature.should.have.property('resource', 'Creature');
       creature.should.have.property(Creature.key, id);
-      creature.should.include(fixture);
+      creature.should.containEql(fixture);
       done();
     });
   });
