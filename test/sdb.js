@@ -27,7 +27,7 @@ describe('SimpleDB:', function(){
     sdb.put(id, fixture, function(err, company){
       should.not.exist(err);
       should.exist(company);
-      company.should.include(fixture);
+      company.should.containEql(fixture);
       done();
     });
   });
@@ -36,7 +36,7 @@ describe('SimpleDB:', function(){
     sdb.get(id, function(err, company){
       should.not.exist(err);
       should.exist(company);
-      company.should.include(fixture);
+      company.should.containEql(fixture);
       done();
     });
   });
@@ -47,7 +47,7 @@ describe('SimpleDB:', function(){
         sdb.put(id, fixture, function(err, company){
           should.not.exist(err);
           should.exist(company);
-          company.should.include(fixture);
+          company.should.containEql(fixture);
           done();
         });
       });
@@ -65,7 +65,7 @@ describe('SimpleDB:', function(){
           should.not.exist(err);
           should.exist(companies);
           companies.should.have.length(1);
-          companies[0].should.include(fixture);
+          companies[0].should.containEql(fixture);
           done();
         });
       });
@@ -75,7 +75,7 @@ describe('SimpleDB:', function(){
           should.not.exist(err);
           should.exist(companies);
           companies.should.have.length(1);
-          companies[0].should.include(fixture);
+          companies[0].should.containEql(fixture);
           done();
         });
       });
@@ -85,7 +85,7 @@ describe('SimpleDB:', function(){
           should.not.exist(err);
           should.exist(companies);
           companies.should.have.length(1);
-          companies[0].should.include(fixture);
+          companies[0].should.containEql(fixture);
           done();
         });
       });
@@ -95,7 +95,7 @@ describe('SimpleDB:', function(){
           should.not.exist(err);
           should.exist(companies);
           companies.should.have.length(1);
-          companies[0].should.include(fixture);
+          companies[0].should.containEql(fixture);
           done();
         });
       });
@@ -111,7 +111,7 @@ describe('SimpleDB:', function(){
           should.not.exist(err);
           should.exist(companies);
           companies.should.have.length(1);
-          companies[0].should.include(fixture);
+          companies[0].should.containEql(fixture);
           done();
         });
       });
@@ -141,7 +141,7 @@ describe('SimpleDB:', function(){
       sdb.put(id + '/' + i, fixture, function(err, company){
         should.not.exist(err);
         should.exist(company);
-        company.should.include(fixture);
+        company.should.containEql(fixture);
         if (++completed === limit){
 
           /**
