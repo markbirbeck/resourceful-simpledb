@@ -25,7 +25,7 @@
     "simpledb": "~0.1.0"
   },
   "devDependencies": {
-    "broadway": "~0.2.9",
+    "broadway": "0.3.6",
     "config": "1.9.0",
     "mocha": "2.0.1",
     "resourceful": "markbirbeck/resourceful",
