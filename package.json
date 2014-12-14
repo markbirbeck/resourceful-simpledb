@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "resourceful-base-engine": "0.4.0",
-    "simpledb": "~0.1.0"
+    "simpledb": "0.1.0"
   },
   "devDependencies": {
     "broadway": "0.3.6",
